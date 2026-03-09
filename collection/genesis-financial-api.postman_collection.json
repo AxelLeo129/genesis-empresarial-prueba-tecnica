@@ -1,0 +1,240 @@
+{
+  "info": {
+    "name": "Genesis Financial API",
+    "description": "API para el sistema financiero Genesis Empresarial",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "Dashboard",
+      "item": [
+        {
+          "name": "Get Home Data",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/home"
+          }
+        },
+        {
+          "name": "Get Accounts Data",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/dashboard/accounts"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Clients",
+      "item": [
+        {
+          "name": "List Clients",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/clients"
+          }
+        },
+        {
+          "name": "Get Client",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/clients/1"
+          }
+        },
+        {
+          "name": "Create Client",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/clients",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"firstName\": \"Juan\",\n  \"lastName\": \"Pérez\",\n  \"email\": \"juan@example.com\",\n  \"phone\": \"5555-1234\",\n  \"birthDate\": \"1990-05-15\",\n  \"nit\": \"1234567-8\",\n  \"cui\": \"1234567890123\",\n  \"gender\": \"Masculino\",\n  \"address\": \"Zona 10, Guatemala\",\n  \"department\": \"Guatemala\",\n  \"municipality\": \"Guatemala\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Client",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/clients/1",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"phone\": \"5555-9999\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Client",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/clients/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Accounts",
+      "item": [
+        {
+          "name": "List Accounts",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts"
+          }
+        },
+        {
+          "name": "Get Account",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/accounts/1"
+          }
+        },
+        {
+          "name": "Create Account",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/accounts",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"clientId\": 1,\n  \"accountType\": \"savings\",\n  \"currency\": \"GTQ\",\n  \"balance\": 5000.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Update Account",
+          "request": {
+            "method": "PUT",
+            "url": "{{baseUrl}}/accounts/1",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"balance\": 6000.00\n}"
+            }
+          }
+        },
+        {
+          "name": "Delete Account",
+          "request": {
+            "method": "DELETE",
+            "url": "{{baseUrl}}/accounts/1"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Transactions",
+      "item": [
+        {
+          "name": "List Transactions",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions"
+          }
+        },
+        {
+          "name": "Get Transaction",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions/1"
+          }
+        },
+        {
+          "name": "Create Transaction",
+          "request": {
+            "method": "POST",
+            "url": "{{baseUrl}}/transactions",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"accountId\": 1,\n  \"type\": \"debit\",\n  \"category\": \"food\",\n  \"amount\": 150.00,\n  \"description\": \"Compras en supermercado\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Weekly Activity",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions/weekly-activity"
+          }
+        },
+        {
+          "name": "Expenses by Category",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions/expenses-by-category"
+          }
+        },
+        {
+          "name": "Balance History",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/transactions/balance-history"
+          }
+        }
+      ]
+    },
+    {
+      "name": "External API (Part 2)",
+      "item": [
+        {
+          "name": "Merged Data (Users + Todos)",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/external/merged-data",
+            "description": "Returns merged data from JSONPlaceholder users and todos APIs in the format: [{ user, email, id, title, completed }, ...]"
+          }
+        },
+        {
+          "name": "Get Users",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/external/users",
+            "description": "Proxy to JSONPlaceholder users API"
+          }
+        },
+        {
+          "name": "Get Todos",
+          "request": {
+            "method": "GET",
+            "url": "{{baseUrl}}/external/todos",
+            "description": "Proxy to JSONPlaceholder todos API"
+          }
+        }
+      ]
+    }
+  ]
+}
