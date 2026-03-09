@@ -1,0 +1,101 @@
+import { Component, ChangeDetectionStrategy, signal, OnInit, inject } from '@angular/core';
+import { DashboardService } from '../../core/services';
+import { Transaction } from '../../core/models/transaction.model';
+import { TransactionRowComponent } from '../../shared/components/transaction-row.component';
+
+@Component({
+  selector: 'app-transactions',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [TransactionRowComponent],
+  template: `
+    <div class="animate-fadeIn">
+      <div class="card">
+        <div class="flex justify-between items-center mb-6">
+          <h2 class="text-lg font-semibold text-gray-900">Todas las Transacciones</h2>
+          <div class="flex gap-2">
+            <select class="input w-40" (change)="filterByType($event)">
+              <option value="">Todos los tipos</option>
+              <option value="deposit">Depósitos</option>
+              <option value="withdrawal">Retiros</option>
+              <option value="purchase">Compras</option>
+              <option value="service">Servicios</option>
+              <option value="transfer">Transferencias</option>
+            </select>
+          </div>
+        </div>
+
+        @if (loading()) {
+          <div class="flex justify-center py-12">
+            <svg class="animate-spin h-8 w-8 text-primary-500" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </div>
+        } @else {
+          <div class="space-y-2">
+            @for (tx of filteredTransactions(); track tx.id) {
+              <app-transaction-row
+                [description]="tx.description"
+                [type]="tx.type"
+                [amount]="tx.amount"
+                [date]="tx.transactionDate"
+                [status]="tx.status"
+                [showStatus]="true"
+              />
+            } @empty {
+              <div class="text-center py-12 text-gray-500">
+                <svg class="w-16 h-16 mx-auto mb-4 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                </svg>
+                <p>No hay transacciones para mostrar</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    </div>
+  `,
+  styles: [`
+    :host {
+      display: block;
+    }
+  `]
+})
+export class TransactionsComponent implements OnInit {
+  private readonly dashboardService = inject(DashboardService);
+
+  readonly transactions = signal<Transaction[]>([]);
+  readonly filteredTransactions = signal<Transaction[]>([]);
+  readonly loading = signal(true);
+  readonly selectedType = signal<string>('');
+
+  ngOnInit(): void {
+    this.loadTransactions();
+  }
+
+  private loadTransactions(): void {
+    this.dashboardService.getAccountsData().subscribe({
+      next: (data) => {
+        this.transactions.set(data.transactions);
+        this.filteredTransactions.set(data.transactions);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loading.set(false);
+      }
+    });
+  }
+
+  filterByType(event: Event): void {
+    const type = (event.target as HTMLSelectElement).value;
+    this.selectedType.set(type);
+
+    if (type) {
+      this.filteredTransactions.set(
+        this.transactions().filter(tx => tx.type === type)
+      );
+    } else {
+      this.filteredTransactions.set(this.transactions());
+    }
+  }
+}
