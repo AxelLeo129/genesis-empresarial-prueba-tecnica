@@ -12,20 +12,8 @@ export interface BarChartData {
 @Component({
   selector: 'app-bar-chart',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="chart-container">
-      <canvas #chartCanvas></canvas>
-    </div>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
-    .chart-container {
-      position: relative;
-      height: 250px;
-    }
-  `]
+  templateUrl: './bar-chart.component.html',
+  styleUrl: './bar-chart.component.scss'
 })
 export class BarChartComponent {
   readonly data = input<BarChartData[]>([]);

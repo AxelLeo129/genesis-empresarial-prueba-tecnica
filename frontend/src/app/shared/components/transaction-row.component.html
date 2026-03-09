@@ -1,0 +1,22 @@
+<div class="transaction-row">
+  <div class="flex items-center gap-3">
+    <!-- Icon -->
+    <div class="w-10 h-10 rounded-full flex items-center justify-center" [style.backgroundColor]="iconBgColor()">
+      <span [innerHTML]="typeIcon()" class="w-5 h-5"></span>
+    </div>
+    <!-- Info -->
+    <div>
+      <p class="font-medium text-gray-900">{{ description() }}</p>
+      <p class="text-sm text-gray-500">{{ formattedDate() }}</p>
+    </div>
+  </div>
+  <!-- Amount -->
+  <div class="text-right">
+    <p [class]="amountClass()">
+      {{ amountPrefix() }}{{ amount() | currency:'$':'symbol':'1.0-0' }}
+    </p>
+    @if (showStatus()) {
+      <span [class]="statusClass()">{{ statusLabel() }}</span>
+    }
+  </div>
+</div>

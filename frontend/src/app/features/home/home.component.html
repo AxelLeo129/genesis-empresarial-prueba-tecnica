@@ -1,0 +1,77 @@
+<div class="animate-fadeIn">
+  <!-- Top Section: Cards and Recent Transactions -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- My Cards section -->
+    <div class="lg:col-span-2">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-lg font-semibold text-gray-900">Mis Tarjetas</h2>
+        <a href="#" class="text-sm text-primary-500 hover:text-primary-600">Ver más</a>
+      </div>
+      <div class="flex gap-4 overflow-x-auto pb-2">
+        @for (card of cards(); track card.id; let i = $index) {
+          <app-credit-card
+            [balance]="card.balance"
+            [holderName]="card.holderName"
+            [cardNumber]="card.cardNumber"
+            [expirationDate]="card.expirationDate"
+            [variant]="i === 0 ? 'dark' : 'light'"
+          />
+        }
+      </div>
+    </div>
+
+    <!-- Recent Transactions -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Transacciones Recientes</h2>
+      <div class="space-y-1">
+        @for (tx of recentTransactions(); track tx.id) {
+          <app-transaction-row
+            [description]="tx.description"
+            [type]="tx.type"
+            [amount]="tx.amount"
+            [date]="tx.date"
+          />
+        }
+      </div>
+    </div>
+  </div>
+
+  <!-- Middle Section: Weekly Activity and Expense Stats -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <!-- Weekly Activity Chart -->
+    <div class="lg:col-span-2 card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Actividad Semanal</h2>
+      <app-bar-chart
+        [data]="weeklyChartData()"
+        label1="Deposito"
+        label2="Retiro"
+        color1="#20C997"
+        color2="#5C7CFA"
+      />
+    </div>
+
+    <!-- Expense Statistics -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Estadísticas de Gastos</h2>
+      <app-pie-chart [data]="expenseChartData()" />
+    </div>
+  </div>
+
+  <!-- Bottom Section: Quick Transfer and Balance History -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Quick Transfer -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Transferencia Rápida</h2>
+      <app-quick-transfer
+        [contacts]="contacts()"
+        (transfer)="onTransfer($event)"
+      />
+    </div>
+
+    <!-- Balance History -->
+    <div class="card">
+      <h2 class="text-lg font-semibold text-gray-900 mb-4">Historial de Saldo</h2>
+      <app-line-chart [data]="balanceChartData()" />
+    </div>
+  </div>
+</div>

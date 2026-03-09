@@ -11,20 +11,8 @@ export interface LineChartData {
 @Component({
   selector: 'app-line-chart',
   changeDetection: ChangeDetectionStrategy.OnPush,
-  template: `
-    <div class="chart-container">
-      <canvas #chartCanvas></canvas>
-    </div>
-  `,
-  styles: [`
-    :host {
-      display: block;
-    }
-    .chart-container {
-      position: relative;
-      height: 200px;
-    }
-  `]
+  templateUrl: './line-chart.component.html',
+  styleUrl: './line-chart.component.scss'
 })
 export class LineChartComponent {
   readonly data = input<LineChartData[]>([]);
